@@ -20,7 +20,7 @@ class WasteController extends Controller
     {
         $wastes = Waste::orderBy('capacity', 'DESC')->get();
 
-        return view('ehwunioleo.waste.index', [
+        return view('ehwunioleo.wastes.index', [
             'title' => 'Limbah B3',
             'wastes' => $wastes,
         ]);

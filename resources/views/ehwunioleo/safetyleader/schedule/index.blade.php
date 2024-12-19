@@ -1,8 +1,8 @@
-@extends('ehwunioleo.layout.main')
+@extends('ehwunioleo.layout')
 
-@section('body')
+@section('content')
 <div class="page-body">
-  
+
 <div class="container-fluid mobile-hide">
   <div class="page-title">
     <div class="row col-12">
@@ -40,9 +40,9 @@
           <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
-        @include('ehwunioleo.schedule.header')
-        @include('ehwunioleo.schedule.request')
-        @include('ehwunioleo.schedule.process')
+        @include('ehwunioleo.schedules.header')
+        @include('ehwunioleo.schedules.request')
+        @include('ehwunioleo.schedules.process')
       </div>
     </div>
   </div>

@@ -4,9 +4,9 @@
 
 @endsection
 
-@section('body')
+@section('content')
 <div class="page-body">
-  
+
 <div class="container-fluid mobile-hide">
   <div class="page-title">
     <div class="row col-12">
@@ -49,9 +49,9 @@
       </div>
       @endif
 
-      @include('ehwunioleo.schedule.header')
-      @include('ehwunioleo.schedule.request')
-      @include('ehwunioleo.schedule.process')
+      @include('ehwunioleo.schedules.header')
+      @include('ehwunioleo.schedules.request')
+      @include('ehwunioleo.schedules.process')
       @include('ehwunioleo.user.dashboard.capacity')
     </div>
   </div>

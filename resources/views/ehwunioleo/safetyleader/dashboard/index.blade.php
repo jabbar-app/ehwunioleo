@@ -1,12 +1,8 @@
-@extends('ehwunioleo.safetyleader.layout.main')
+@extends('ehwunioleo.layout')
 
-@section('css')
-
-@endsection
-
-@section('body')
+@section('content')
 <div class="page-body">
-  
+
 <div class="container-fluid mobile-hide">
   <div class="page-title">
     <div class="row col-12">
@@ -37,8 +33,8 @@
       <div class="col-sm-12">
         @include('ehwunioleo.dashboard.greeting')
         @include('ehwunioleo.safetyleader.dashboard.capacity')
-        @include('ehwunioleo.schedule.request')
-        @include('ehwunioleo.schedule.process')
+        @include('ehwunioleo.schedules.request')
+        @include('ehwunioleo.schedules.process')
       </div>
     </div>
   </div>

@@ -25,13 +25,13 @@ class ScheduleController extends Controller
     $schedules = Schedule::all();
     $sources = DB::table('sources')->get();
     $requests = Schedule::where('step', '0')->get();
-    $process = Schedule::where('step', '1')->get();
+    $processes = Schedule::where('step', '1')->get();
 
-    return view('ehwunioleo.schedule.index', [
+    return view('ehwunioleo.schedules.index', [
       'title' => 'Penjadwalan',
       'schedules' => $schedules,
       'requests' => $requests,
-      'process' => $process,
+      'processes' => $processes,
       'sources' => $sources,
     ]);
   }
@@ -45,7 +45,7 @@ class ScheduleController extends Controller
     $wastes = Waste::all();
     $sources = DB::table('sources')->get();
 
-    return view('ehwunioleo.schedule.create', [
+    return view('ehwunioleo.schedules.create', [
       'title' => 'Penjadwalan',
       'schedules' => $schedules,
       'wastes' => $wastes,
@@ -103,7 +103,7 @@ class ScheduleController extends Controller
     $schedules = Schedule::where('id', $id)->get();
     $sources = Source::all();
 
-    return view('ehwunioleo.schedule.detail', [
+    return view('ehwunioleo.schedules.detail', [
       'title' => 'Penjadwalan',
       'schedules' => $schedules,
       'sources' => $sources,
@@ -190,7 +190,7 @@ class ScheduleController extends Controller
     $schedules = Schedule::where('id', $request->id)->get();
     $providers = Provider::all();
 
-    return view('ehwunioleo.schedule.set', [
+    return view('ehwunioleo.schedules.set', [
       'title' => 'Penjadwalan',
       'schedules' => $schedules,
       'providers' => $providers,
@@ -213,7 +213,7 @@ class ScheduleController extends Controller
     $schedules = Schedule::where('id', $id)->get();
     $providers = Provider::all();
 
-    return view('ehwunioleo.schedule.complete', [
+    return view('ehwunioleo.schedules.complete', [
       'title' => 'Penjadwalan',
       'schedules' => $schedules,
       'providers' => $providers,

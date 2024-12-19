@@ -1,10 +1,10 @@
-@extends('ehwunioleo.layout.main')
+@extends('ehwunioleo.layout')
 
 @section('css')
 
 @endsection
 
-@section('body')
+@section('content')
 <div class="page-body">
   @foreach($profile as $p)
   <div class="container-fluid">

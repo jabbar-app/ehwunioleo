@@ -1,6 +1,6 @@
-@extends('ehwunioleo.layout.main')
+@extends('ehwunioleo.layout')
 
-@section('body')
+@section('content')
 <div class="page-body">
   <!-- breadcrumb -->
   <div class="container-fluid">
@@ -117,7 +117,7 @@
                           ";
                       }
                       ?>
-                      
+
                     </select>
                     @error('role')
                     <span class="invalid-feedback" role="alert">

@@ -1,11 +1,11 @@
-@extends('ehwunioleo.layout.main')
+@extends('ehwunioleo.layout')
 
 @section('css')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
 @endsection
 
-@section('body')
+@section('content')
 <div class="page-body">
   <div class="container-fluid mobile-hide">
     <div class="page-title">
@@ -29,9 +29,9 @@
       <div class="col-sm-12">
         @include('ehwunioleo.dashboard.greeting')
         <div id="tasks"></div>
-        @include('ehwunioleo.schedule.process')
+        @include('ehwunioleo.schedules.process')
         @include('ehwunioleo.dashboard.chart')
-        @include('ehwunioleo.schedule.request')
+        @include('ehwunioleo.schedules.request')
         @include('ehwunioleo.dashboard.capacity')
         @include('ehwunioleo.dashboard.user')
         @include('ehwunioleo.dashboard.waste')

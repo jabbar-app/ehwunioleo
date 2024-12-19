@@ -23,14 +23,14 @@ class SettingController extends Controller
         if (Auth::user()->role != 'Super Admin') {
             return redirect('/dashboard');
         }
-        
+
         $wastes = Waste::all();
         $reports = Report::all();
         $providers = Provider::all();
         $sources = DB::table('sources')->get();
         $departments = DB::table('departments')->get();
 
-        return view('ehwunioleo.setting.index', [
+        return view('ehwunioleo.settings.index', [
             'title' => 'Pengaturan',
             'wastes' => $wastes,
             'reports' => $reports,

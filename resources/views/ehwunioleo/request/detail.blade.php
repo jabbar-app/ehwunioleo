@@ -1,9 +1,9 @@
-@extends('ehwunioleo.layout.main')
+@extends('ehwunioleo.layout')
 
 @section('css')
 @endsection
 
-@section('body')
+@section('content')
 <div class="page-body">
   <!-- breadcrumb -->
   <div class="container-fluid">
@@ -81,7 +81,7 @@
                     <input class="form-control" type="text" name="packaging" id="packaging" value="{{ $s->packaging }}" readonly="readonly">
                   </div>
                 </div>
-                
+
                 <div class="col-12">
                   <div class="mb-3">
                     <label class="form-label">Sumber</label>

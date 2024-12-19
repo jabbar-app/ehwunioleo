@@ -14,7 +14,7 @@ class UserController extends Controller
   {
       $this->middleware("auth");
   }
-  
+
   public function index()
   {
     $users = User::all();
@@ -25,11 +25,11 @@ class UserController extends Controller
     ]);
   }
 
-  public function add()
+  public function create()
   {
     $users = User::all();
 
-    return view('ehwunioleo.users.add', [
+    return view('ehwunioleo.users.create', [
       'title' => 'Users',
       'users' => $users,
     ]);
@@ -69,6 +69,21 @@ class UserController extends Controller
       'departments' => $departments,
       'titles' => $titles,
     ]);
+  }
+
+  public function roles()
+  {
+    return view('ehwunioleo.users.roles', [
+        'users' => User::all(),
+    ]);
+  }
+
+  public function rolesUpdate(Request $request)
+  {
+    $user = User::findOrFail($request->user_id);
+    $user->update(['role' => $request->role]);
+
+    return redirect()->back()->with('success', 'Role User telah berhasil diperbaharui!');
   }
 
   /**

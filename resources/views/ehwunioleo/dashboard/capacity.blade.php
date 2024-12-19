@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="card">
       <div class="card-header pb-0">
-      <h4 class="font-primary f-w-400">Kapasitas TPS LB3</h4>
+        <h4 class="font-primary f-w-400">Kapasitas TPS LB3</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -18,17 +18,37 @@
                 <!-- <th style="text-align: center;">Tindakan</th> -->
               </tr>
             </thead>
-            <tbody >
-              @foreach($wastes as $w)
-              <tr>
-                <td>{{ $w->waste_name }}</td>
-                <td>{{ $w->waste_code }}</td>
-                <td>{{ $w->packaging }}</td>
-                <td class="text-center">{{ $w->capacity }}</td>
-                <td class="text-center">{{ $w->used }}</td>
-                <td class="text-center">{{ $w->capacity - $w->used }}</td>
-              </tr>
+            <tbody>
+              @php
+                $totalCapacity = 0;
+                $totalUsed = 0;
+              @endphp
+
+              @foreach ($wastes as $waste)
+                <tr>
+                  <td>{{ $waste->waste_name }}</td>
+                  <td>{{ $waste->waste_code }}</td>
+                  <td>{{ $waste->packaging }}</td>
+                  <td class="text-center">{{ $waste->capacity }}</td>
+                  <td class="text-center">{{ $waste->used }}</td>
+                  <td class="text-center">{{ $waste->capacity - $waste->used }}</td>
+                </tr>
+                @php
+                  $totalCapacity += $waste->capacity;
+                  $totalUsed += $waste->used;
+                @endphp
               @endforeach
+
+              @php
+                $totalAvailable = $totalCapacity - $totalUsed;
+              @endphp
+
+              <div>
+                <strong>Total Kapasitas:</strong> {{ $totalCapacity }} <br>
+                <strong>Total Kapasitas Terpakai:</strong> {{ $totalUsed }} <br>
+                <strong>Total Kapasitas Tersedia:</strong> {{ $totalAvailable }}
+              </div>
+
             </tbody>
           </table>
         </div>

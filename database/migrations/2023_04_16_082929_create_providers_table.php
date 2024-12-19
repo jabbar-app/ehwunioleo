@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('waste');
             $table->string('address')->nullable();
             $table->string('contract');
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

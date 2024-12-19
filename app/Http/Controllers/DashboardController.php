@@ -10,66 +10,53 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware('auth');
-  }
-
-  public function index()
-  {
-    $schedules = Schedule::all();
-    $requests = Schedule::where('step', '0')->get();
-    $process = Schedule::where('step', '1')->get();
-
-    // dd($request);
-    $users   = User::orderBy('created_at', 'DESC')->get();
-    $wastes  = Waste::orderBy('capacity', 'DESC')->get();
-
-    $reports = DB::table('reports')
-      ->select('date', 'waste_name', 'cost', 'source')
-      ->get();
-
-
-    if (Auth::user()->role == "Admin") {
-      return view('ehwunioleo.admin.dashboard.index', [
-        'title' => 'Dashboard',
-        'schedules' => $schedules,
-        'wastes' => $wastes,
-        'reports' => $reports,
-      ]);
-    } elseif (Auth::user()->role == "Safety Leader") {
-      return view('ehwunioleo.safetyleader.dashboard.index', [
-        'title' => 'Dashboard',
-        'schedules' => $schedules,
-        'requests' => $requests,
-        'process' => $process,
-        'wastes' => $wastes,
-      ]);
-    } elseif (Auth::user()->role == "User") {
-      return view('ehwunioleo.user.dashboard.index', [
-        'title' => 'Dashboard',
-        'schedules' => $schedules,
-        'requests' => $requests,
-        'process' => $process,
-        'wastes' => $wastes,
-      ]);
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
 
-    return view('ehwunioleo.dashboard.index', [
-      'title' => 'Dashboard',
-      'name' => Auth::user()->name,
-      'role' => Auth::user()->role,
-      'process' => $process,
-      'requests' => $requests,
-      'schedules' => $schedules,
-      'users' => $users,
-      'wastes' => $wastes,
-      'reports' => $reports,
-    ]);
-  }
+    public function index()
+    {
+        // Ambil data yang diperlukan
+        $schedules = Schedule::all();
+        $requests = Schedule::where('step', '0')->get();
+        $processes = Schedule::where('step', '1')->get();
+        $users = User::orderBy('created_at', 'DESC')->get();
+        $wastes = Waste::orderBy('capacity', 'DESC')->get();
+        $reports = DB::table('reports')->select('date', 'waste_name', 'cost', 'source')->get();
 
-  public function users()
-  {
-    return view('ehwunioleo.users.index');
-  }
+        // Tentukan tampilan berdasarkan peran pengguna
+        $viewData = [
+            'title' => 'Dashboard',
+            'schedules' => $schedules,
+            'wastes' => $wastes,
+            'processes' => $processes,
+            'reports' => $reports,
+        ];
+
+        switch (Auth::user()->role) {
+            case "Admin":
+                return view('ehwunioleo.admin.dashboard.index', $viewData);
+            case "Safety Leader":
+                $viewData['requests'] = $requests;
+                // dd($viewData);
+                return view('ehwunioleo.safetyleader.dashboard.index', $viewData);
+            case "User":
+                $viewData['requests'] = $requests;
+                $viewData['processes'] = $processes;
+                return view('ehwunioleo.user.dashboard.index', $viewData);
+            default:
+                $viewData['name'] = Auth::user()->name;
+                $viewData['role'] = Auth::user()->role;
+                $viewData['processes'] = $processes;
+                $viewData['requests'] = $requests;
+                $viewData['users'] = $users;
+                return view('ehwunioleo.dashboard', $viewData);
+        }
+    }
+
+    public function users()
+    {
+        return view('ehwunioleo.users.index');
+    }
 }

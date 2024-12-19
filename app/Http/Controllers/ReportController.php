@@ -12,13 +12,13 @@ class ReportController extends Controller
     {
         $this->middleware("auth");
     }
-    
+
     public function index()
     {
         $reports = Report::all();
 
-        return view('ehwunioleo.report.index', [
-            'title' => 'Reports',
+        return view('ehwunioleo.reports.index', [
+            'title' => 'Laporan',
             'reports' => $reports,
         ]);
     }
@@ -36,7 +36,7 @@ class ReportController extends Controller
         DB::table('reports')->where('id', $request->id)->update([
             'cost' => $request->cost,
           ]);
-      
+
           return redirect('/settings')->with('success', 'Data cost telah berhasil diperbaharui!');
     }
 }

@@ -4,9 +4,9 @@
 
 @endsection
 
-@section('body')
+@section('content')
 <div class="page-body">
-  
+
 <div class="container-fluid mobile-hide">
   <div class="page-title">
     <div class="row col-12">

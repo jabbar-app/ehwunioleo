@@ -24,7 +24,7 @@ class ProviderController extends Controller
 
         // dd($providers);
 
-        return view('ehwunioleo.provider.index', [
+        return view('ehwunioleo.providers.index', [
             'title' => 'Info 3P',
             'providers' => $providers,
         ]);
@@ -35,7 +35,7 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        return view('ehwunioleo.provider.add', [
+        return view('ehwunioleo.providers.add', [
             'title' => 'Info 3P',
         ]);
     }
@@ -71,7 +71,7 @@ class ProviderController extends Controller
         $providers = Provider::where('id', $id)->get();
         $wastes = Waste::all();
 
-        return view('ehwunioleo.provider.edit', [
+        return view('ehwunioleo.providers.edit', [
             'title' => 'Info 3P',
             'providers' => $providers,
             'wastes' => $wastes,

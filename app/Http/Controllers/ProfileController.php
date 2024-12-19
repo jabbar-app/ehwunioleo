@@ -12,8 +12,8 @@ class ProfileController extends Controller
     {
         $this->middleware("auth");
     }
-    
-    public function index() {
+
+    public function edit() {
 
         // return redirect('/dashboard');
         $profile = DB::table('users')->where('id', Auth::user()->id)->get();
