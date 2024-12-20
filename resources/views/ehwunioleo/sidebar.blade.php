@@ -24,12 +24,14 @@
       </a>
     </li>
 
-    <li class="menu-item {{ Route::is('reports.index') ? 'active' : '' }}">
-      <a href="{{ route('reports.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-notebook"></i>
-        <div data-i18n="Laporan">Laporan</div>
-      </a>
-    </li>
+    @if (Auth::user()->role == 'Super Admin')
+      <li class="menu-item {{ Route::is('reports.index') ? 'active' : '' }}">
+        <a href="{{ route('reports.index') }}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-notebook"></i>
+          <div data-i18n="Laporan">Laporan</div>
+        </a>
+      </li>
+    @endif
 
     <li class="menu-item {{ Route::is('wastes.index') ? 'active' : '' }}">
       <a href="{{ route('wastes.index') }}" class="menu-link">
@@ -38,12 +40,14 @@
       </a>
     </li>
 
-    <li class="menu-item {{ Route::is('schedules.*') ? 'active' : '' }}">
-      <a href="{{ route('schedules.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-calendar"></i>
-        <div data-i18n="Penjadwalan">Penjadwalan</div>
-      </a>
-    </li>
+    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Safety Leader')
+      <li class="menu-item {{ Route::is('schedules.*') ? 'active' : '' }}">
+        <a href="{{ route('schedules.index') }}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-calendar"></i>
+          <div data-i18n="Penjadwalan">Penjadwalan</div>
+        </a>
+      </li>
+    @endif
 
     <li class="menu-item {{ Route::is('providers.index') ? 'active' : '' }}">
       <a href="{{ route('providers.index') }}" class="menu-link">
@@ -52,35 +56,39 @@
       </a>
     </li>
 
-    <li class="menu-item {{ Route::is('settings.index') ? 'active' : '' }}">
-      <a href="{{ route('settings.index') }}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-settings-exclamation"></i>
-        <div data-i18n="Pengaturan">Pengaturan</div>
-      </a>
-    </li>
+    @if (Auth::user()->role == 'Super Admin')
+      <li class="menu-item {{ Route::is('settings.index') ? 'active' : '' }}">
+        <a href="{{ route('settings.index') }}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-settings-exclamation"></i>
+          <div data-i18n="Pengaturan">Pengaturan</div>
+        </a>
+      </li>
+    @endif
 
-    <!-- Manajemen User -->
-    <li class="menu-header small text-uppercase">
-      <span class="menu-header-text" data-i18n="Manajemen User">Manajemen User</span>
-    </li>
-    <li class="menu-item {{ Route::is('users.*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons ti ti-user-circle"></i>
-        <div data-i18n="Kelola User">Kelola User</div>
-      </a>
-      <ul class="menu-sub">
-        <li class="menu-item {{ Route::is('users.index') ? 'active' : '' }}">
-          <a href="{{ route('users.index') }}" class="menu-link">
-            <div data-i18n="Semua Data">Semua Data</div>
-          </a>
-        </li>
-        <li class="menu-item {{ Route::is('users.create') ? 'active' : '' }}">
-          <a href="{{ route('users.create') }}" class="menu-link">
-            <div data-i18n="Tambah User">Tambah User</div>
-          </a>
-        </li>
-      </ul>
-    </li>
+    @if (Auth::user()->role == 'Super Admin')
+      <!-- Manajemen User -->
+      <li class="menu-header small text-uppercase">
+        <span class="menu-header-text" data-i18n="Manajemen User">Manajemen User</span>
+      </li>
+      <li class="menu-item {{ Route::is('users.*') ? 'active open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-user-circle"></i>
+          <div data-i18n="Kelola User">Kelola User</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {{ Route::is('users.index') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="menu-link">
+              <div data-i18n="Semua Data">Semua Data</div>
+            </a>
+          </li>
+          <li class="menu-item {{ Route::is('users.create') ? 'active' : '' }}">
+            <a href="{{ route('users.create') }}" class="menu-link">
+              <div data-i18n="Tambah User">Tambah User</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    @endif
 
     <li class="menu-item {{ Route::is('roles') ? 'active' : '' }}">
       <a href="{{ route('roles') }}" class="menu-link">

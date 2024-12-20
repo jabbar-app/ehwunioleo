@@ -7,7 +7,7 @@
         <h4 class="text-primary mb-0">
           <a href="{{ route('dashboard') }}" class="text-muted fw-light">Dashboard /</a> Manajemen Penjadwalan
         </h4>
-        <a href="{{ route('wastes.create') }}" class="btn btn-md btn-primary mb-2 float-end">Tambah Data</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-secondary mb-2 float-end">Kembali</a>
       </div>
     </div>
   </div>
