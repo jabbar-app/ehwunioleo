@@ -73,12 +73,12 @@ class ScheduleController extends Controller
      */
     public function detail($id)
     {
-        $schedules = Schedule::where('id', $id)->get();
+        $schedule = Schedule::findOrFail($id);
         $sources = Source::all();
 
         return view('ehwunioleo.schedules.detail', [
             'title' => 'Penjadwalan',
-            'schedules' => $schedules,
+            'schedule' => $schedule,
             'sources' => $sources,
             'id' => $id,
         ]);
