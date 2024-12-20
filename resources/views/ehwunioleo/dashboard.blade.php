@@ -11,6 +11,13 @@
 
 @section('content')
   <div class="row my-4">
+    @if (Auth::user()->role == 'User')
+      <div class="d-lg-none d-block">
+        <div class="col-12 mb-4">
+          <a href="{{ route('schedules.create') }}" class="btn btn-lg btn-primary w-100">Tambah Request</a>
+        </div>
+      </div>
+    @endif
     <!-- Website Analytics -->
     <div class="col-lg-6 mb-4">
       <div class="swiper-container swiper-container-horizontal swiper swiper-card-advance-bg"
@@ -109,7 +116,8 @@
                 <span class="badge bg-label-info p-1 rounded"><i class="ti ti-recycle ti-xs"></i></span>
                 <p class="mb-0">Request</p>
               </div>
-              <h5 class="mb-0 pt-1 text-nowrap">{{ number_format(($requests->count() / $schedules->count()) * 100, 1) }}%
+              <h5 class="mb-0 pt-1 text-nowrap">
+                {{ number_format(($requests->count() / $schedules->count()) * 100, 1) }}%
               </h5>
               <small class="text-muted">{{ number_format($requests->count()) }}</small>
             </div>
@@ -309,149 +317,160 @@
     <!--/ Support Tracker -->
   </div> --}}
 
-  @include('ehwunioleo.dashboard.chart')
-  @include('ehwunioleo.schedules.process')
-  @include('ehwunioleo.schedules.request')
+  @if (Auth::user()->role == 'Super Admin')
+    @include('ehwunioleo.dashboard.chart')
+  @endif
 
-  <div class="row my-4">
-    <div class="col-12 col-xl-8 mb-4">
-      @php
-        $totalCapacity = 0;
-        $totalUsed = 0;
-        foreach ($wastes as $waste) {
-            $totalCapacity += $waste->capacity;
-            $totalUsed += $waste->used;
-        }
-        $totalAvailable = $totalCapacity - $totalUsed;
-      @endphp
-      <div class="card h-100">
-        <div class="card-header d-flex justify-content-between">
-          <div class="card-title mb-0">
-            <h5 class="mb-0">Kapasitas TPS LB3</h5>
-            <small class="text-muted">Total: <strong>{{ number_format($totalCapacity) }}</strong> | Terpakai:
-              <strong>{{ number_format($totalUsed) }}</strong></small>
+  @if (Auth::user()->role != 'Admin')
+    @include('ehwunioleo.schedules.process')
+    @include('ehwunioleo.schedules.request')
+  @endif
+
+  @if (Auth::user()->role != 'Safety Leader')
+    <div class="row my-4">
+      <div class="col-12 col-xl-8 mb-4">
+        @php
+          $totalCapacity = 0;
+          $totalUsed = 0;
+          foreach ($wastes as $waste) {
+              $totalCapacity += $waste->capacity;
+              $totalUsed += $waste->used;
+          }
+          $totalAvailable = $totalCapacity - $totalUsed;
+        @endphp
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <h5 class="mb-0">Kapasitas TPS LB3</h5>
+              <small class="text-muted">Total: <strong>{{ number_format($totalCapacity) }}</strong> | Terpakai:
+                <strong>{{ number_format($totalUsed) }}</strong></small>
+            </div>
+            <div class="dropdown">
+              <button class="btn p-0" type="button" id="MonthlyCampaign" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="MonthlyCampaign">
+                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                <a class="dropdown-item" href="javascript:void(0);">Detail</a>
+              </div>
+            </div>
           </div>
-          <div class="dropdown">
-            <button class="btn p-0" type="button" id="MonthlyCampaign" data-bs-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="MonthlyCampaign">
-              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-              <a class="dropdown-item" href="javascript:void(0);">Detail</a>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6 pt-4">
+                <canvas id="capacityChart"></canvas>
+              </div>
+              <div class="col-6">
+                <ul class="p-0 m-0 scrollable-list">
+                  @foreach ($wastes as $waste)
+                    <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                      <div class="d-flex justify-content-between w-100 flex-wrap">
+                        <div>
+                          <h6 class="mb-0">{{ $waste->waste_name }}</h6>
+                          <small><span class="text-muted">Kode: </span>{{ $waste->waste_code }}</small>
+                          <br>
+                          <small><span class="text-muted">Kapasitas:
+                            </span>{{ number_format($waste->capacity) }}</small>
+                        </div>
+                        <div class="me-3">
+                          <p class="mb-0 fw-medium">{{ number_format($waste->capacity - $waste->used) }}<small
+                              class="text-muted"> tersisa</small></p>
+                          <small
+                            class="text-success">{{ number_format((($waste->capacity - $waste->used) / $waste->capacity) * 100, 1) }}%</small>
+                        </div>
+                      </div>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-6 pt-4">
-              <canvas id="capacityChart"></canvas>
+      </div>
+
+      <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <div class="card-title mb-0">
+              <h5 class="mb-0">Daftar Limbah</h5>
+              <small class="text-muted">{{ $wastes->count() }} terdaftar</small>
             </div>
-            <div class="col-6">
-              <ul class="p-0 m-0 scrollable-list">
-                @foreach ($wastes as $waste)
-                  <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-between w-100 flex-wrap">
-                      <div>
-                        <h6 class="mb-0">{{ $waste->waste_name }}</h6>
-                        <small><span class="text-muted">Kode: </span>{{ $waste->waste_code }}</small>
-                        <br>
-                        <small><span class="text-muted">Kapasitas: </span>{{ number_format($waste->capacity) }}</small>
-                      </div>
-                      <div class="me-3">
-                        <p class="mb-0 fw-medium">{{ number_format($waste->capacity - $waste->used) }}<small
-                            class="text-muted"> tersisa</small></p>
-                        <small
-                          class="text-success">{{ number_format((($waste->capacity - $waste->used) / $waste->capacity) * 100, 1) }}%</small>
-                      </div>
+            <div class="dropdown">
+              <button class="btn p-0" type="button" id="MonthlyCampaign" data-bs-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="ti ti-dots-vertical ti-sm text-muted"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="MonthlyCampaign">
+                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                <a class="dropdown-item" href="javascript:void(0);">Download</a>
+                <a class="dropdown-item" href="javascript:void(0);">View All</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="p-0 m-0 scrollable-list">
+              @foreach ($wastes as $waste)
+                <li class="mb-4 me-3 pb-1 d-flex justify-content-between align-items-center">
+                  <a href="#" class="badge bg-label-success rounded p-2 mb-auto"><i
+                      class="ti ti-recycle ti-sm"></i></a>
+                  <div class="d-flex justify-content-between w-100 flex-wrap">
+                    <div class="ms-3">
+                      <h6 class="mb-0">{{ $waste->waste_name }}</h6>
+                      <small class="text-muted">Kode: {{ $waste->waste_code }}</small>
+                      <br>
+                      <small class="text-muted">Pack: {{ $waste->packaging }}</small>
                     </div>
-                  </li>
-                @endforeach
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-4 col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-header d-flex justify-content-between">
-          <div class="card-title mb-0">
-            <h5 class="mb-0">Daftar Limbah</h5>
-            <small class="text-muted">{{ $wastes->count() }} terdaftar</small>
-          </div>
-          <div class="dropdown">
-            <button class="btn p-0" type="button" id="MonthlyCampaign" data-bs-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              <i class="ti ti-dots-vertical ti-sm text-muted"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="MonthlyCampaign">
-              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-              <a class="dropdown-item" href="javascript:void(0);">Download</a>
-              <a class="dropdown-item" href="javascript:void(0);">View All</a>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <ul class="p-0 m-0 scrollable-list">
-            @foreach ($wastes as $waste)
-              <li class="mb-4 me-3 pb-1 d-flex justify-content-between align-items-center">
-                <a href="#" class="badge bg-label-success rounded p-2 mb-auto"><i class="ti ti-recycle ti-sm"></i></a>
-                <div class="d-flex justify-content-between w-100 flex-wrap">
-                  <div class="ms-3">
-                    <h6 class="mb-0">{{ $waste->waste_name }}</h6>
-                    <small class="text-muted">Kode: {{ $waste->waste_code }}</small>
-                    <br>
-                    <small class="text-muted">Pack: {{ $waste->packaging }}</small>
+                    <div class="badge bg-label-info mb-auto">Edit</div>
                   </div>
-                  <div class="badge bg-label-info mb-auto">Edit</div>
-                </div>
-              </li>
-            @endforeach
-          </ul>
+                </li>
+              @endforeach
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  @endif
 @endsection
 
 @push('scripts')
-  <script>
-    const ctx = document.getElementById('capacityChart').getContext('2d');
-    const capacityChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Terpakai', 'Tersedia'],
-        datasets: [{
-          label: 'Kapasitas',
-          data: [{{ $totalUsed }}, {{ $totalAvailable }}],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.6)', // Warna untuk terpakai
-            'rgba(75, 192, 192, 0.6)' // Warna untuk tersedia
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(75, 192, 192, 1)'
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                return tooltipItem.label + ': ' + tooltipItem.raw;
+  @if (Auth::user()->role != 'Safety Leader')
+    <script>
+      const ctx = document.getElementById('capacityChart').getContext('2d');
+      const capacityChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Terpakai', 'Tersedia'],
+          datasets: [{
+            label: 'Kapasitas',
+            data: [{{ $totalUsed }}, {{ $totalAvailable }}],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)', // Warna untuk terpakai
+              'rgba(75, 192, 192, 0.6)' // Warna untuk tersedia
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return tooltipItem.label + ': ' + tooltipItem.raw;
+                }
               }
             }
           }
         }
-      }
-    });
-  </script>
+      });
+    </script>
+  @endif
 @endpush

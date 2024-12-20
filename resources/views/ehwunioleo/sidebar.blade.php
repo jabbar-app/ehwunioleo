@@ -38,7 +38,7 @@
       </a>
     </li>
 
-    <li class="menu-item {{ Route::is('schedules.index') ? 'active' : '' }}">
+    <li class="menu-item {{ Route::is('schedules.*') ? 'active' : '' }}">
       <a href="{{ route('schedules.index') }}" class="menu-link">
         <i class="menu-icon tf-icons ti ti-calendar"></i>
         <div data-i18n="Penjadwalan">Penjadwalan</div>

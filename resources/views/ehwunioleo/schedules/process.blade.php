@@ -6,14 +6,15 @@
           <h3 class="mb-0">Manajemen Data TPS LB3</h3>
           <small class="text-muted">Rute: TPS LB3 menuju Provider.</small>
         </div>
-        <div class="dropdown">
+        <a href="{{ route('schedules.create') }}" class="btn btn-primary d-none d-lg-block my-auto py-auto">Tambah Request</a>
+        <div class="dropdown d-lg-none d-block">
           <button class="btn p-0" type="button" id="earningReportsId" data-bs-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
             <i class="ti ti-dots-vertical ti-sm text-muted"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="earningReportsId">
-            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+            <a class="dropdown-item" href="{{ route('schedules.create') }}">Tambah Request</a>
+            {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
           </div>
         </div>
       </div>

@@ -43,6 +43,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::resource('schedules', ScheduleController::class);
+});
 
 Route::group(['middleware' => ['admin']], function () {
     Route::get('/cost/edit', [ReportController::class, 'cost_edit']);
@@ -61,7 +64,7 @@ Route::group(['middleware' => ['admin']], function () {
         Route::post('/detail/{id}', [ScheduleController::class, 'update'])->name('schedule.detail');
         Route::get('/set/{id}', [ScheduleController::class, 'show'])->name('schedule.set');
         Route::post('/set/{id}', [ScheduleController::class, 'set'])->name('schedule.set');
-        Route::get('/complete/{id}', [ScheduleController::class, 'confirm'])->name('schedule.complete');;
+        Route::get('/complete/{id}', [ScheduleController::class, 'confirm'])->name('schedule.confirm');;
         Route::post('/complete/{id}', [ScheduleController::class, 'complete'])->name('schedule.complete');;
         Route::get('/add/checkWaste', [ScheduleController::class, 'check']);
         Route::get('/{id}', [ScheduleController::class, 'detail'])->name('schedule.resubmit');
@@ -73,13 +76,10 @@ Route::group(['middleware' => ['admin']], function () {
     Route::resource('users', UserController::class);
     Route::resource('reports', ReportController::class);
     Route::resource('wastes', WasteController::class);
-    Route::resource('schedules', ScheduleController::class);
     Route::resource('providers', ProviderController::class);
     Route::resource('sources', SourceController::class);
     Route::resource('departments', DepartmentController::class);
 });
-
-
 
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
