@@ -10,6 +10,11 @@
         </strong> {{ session('info') }}
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+    @elseif(session('Warning'))
+      <div class="alert alert-Warning dark alert-dismissible fade show" role="alert"><strong>Info!
+        </strong> {{ session('Warning') }}
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     @elseif (session('danger') || session('error'))
       <div class="alert alert-danger dark alert-dismissible fade show" role="alert">
         <strong>Gagal!</strong> {{ session('danger') ?? session('error') }}

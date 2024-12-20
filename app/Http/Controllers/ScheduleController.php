@@ -158,7 +158,10 @@ class ScheduleController extends Controller
             'status' => $status,
         ]);
 
-        return redirect('/dashboard')->with('warning', 'Status Request diubah menjadi Correction!');
+        if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Safety Leader') {
+            return redirect()->route('schedules.index')->with('info', 'Status Request diubah menjadi Correction!');
+        }
+        return redirect()->route('dashboard')->with('info', 'Status Request diubah menjadi Correction!');
     }
 
     public function show(Request $request)
